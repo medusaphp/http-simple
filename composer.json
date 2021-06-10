@@ -4,7 +4,13 @@
     "php": ">=8.0",
     "medusa/functions": "^1.0"
   },
-  "autoload": {
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Pascal Schnell",
+      "email": "pascal.schnell@getmedusa.org"
+    }
+  ],  "autoload": {
     "psr-4": {
       "Medusa\\Http\\Simple\\": "src"
     }
