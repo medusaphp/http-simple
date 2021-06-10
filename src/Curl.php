@@ -2,6 +2,7 @@
 namespace Medusa\Http\Simple;
 
 use CurlHandle;
+use function curl_close;
 use function curl_exec;
 use function curl_getinfo;
 use function curl_init;
@@ -80,5 +81,9 @@ class Curl {
         $self = new static();
         $self->curl = $ch;
         return $self;
+    }
+
+    public function close(): void {
+        curl_close($this->curl);
     }
 }
