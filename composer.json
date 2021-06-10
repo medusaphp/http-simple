@@ -1,0 +1,15 @@
+{
+  "name": "medusa/http-simple",
+  "require": {
+    "php": ">=8.0",
+    "medusa/functions": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Medusa\\Http\\Simple\\": "src"
+    }
+  },
+  "require-dev": {
+    "medusa/dev-tools": "^1.0"
+  }
+}
