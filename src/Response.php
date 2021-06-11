@@ -50,15 +50,8 @@ class Response implements MessageInterface {
     /**
      * @return string
      */
-    public function getProtocol(): string {
-        return $this->protocol;
-    }
-
-    /**
-     * @return string
-     */
-    public function getStatusMessage(): string {
-        return $this->statusMessage;
+    public function getReasonPhrase(): string {
+        return $this->reasonPhrase;
     }
 
     /**
