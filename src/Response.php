@@ -3,6 +3,7 @@ namespace Medusa\Http\Simple;
 
 use Medusa\Http\Simple\Traits\MessageTrait;
 use function explode;
+use function Medusa\DevTools\dd;
 use function preg_match;
 
 /**
@@ -20,7 +21,8 @@ class Response implements MessageInterface {
      * @param string $body
      * @param int    $statusCode
      */
-    public function __construct(array $headers, string $body, private int $statusCode) {
+    public function __construct(array $headers, string $body, private int $statusCode = 200, private string $reasonPhrase = 'OK', string $protocolVersion = 'HTTP/1.1') {
+        $this->protocolVersion = $protocolVersion;
         $this->addHeaders($headers);
         $this->body = $body;
     }
@@ -43,6 +45,20 @@ class Response implements MessageInterface {
         }
 
         return new static($headers, $body, $statusCode);
+    }
+
+    /**
+     * @return string
+     */
+    public function getProtocol(): string {
+        return $this->protocol;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatusMessage(): string {
+        return $this->statusMessage;
     }
 
     /**

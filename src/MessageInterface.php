@@ -8,6 +8,8 @@ namespace Medusa\Http\Simple;
  */
 interface MessageInterface {
 
+    public function getProtocolVersion(): string;
+
     public function addHeaders(array $headers): static;
 
     /**

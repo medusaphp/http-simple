@@ -50,8 +50,7 @@ class Curl {
 
         if (false === $response) {
             return new Response([
-                                    'HTTP/1.1 500 Internal Server Error',
-                                ], '', 500);
+                                ], '', 500, 'Internal Server Error');
         }
 
         return Response::createFromRawResponse($response, curl_getinfo($this->curl, CURLINFO_RESPONSE_CODE));

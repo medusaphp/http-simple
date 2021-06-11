@@ -2,6 +2,7 @@
 namespace Medusa\Http\Simple\Traits;
 
 use JsonException;
+use Medusa\Http\Simple\Response;
 use function array_filter;
 use function array_map;
 use function explode;
@@ -10,20 +11,30 @@ use function in_array;
 use function is_int;
 use function is_string;
 use function json_decode;
+use function sprintf;
 use function str_contains;
+use function str_replace;
 use function stripos;
 use function strtolower;
 use const JSON_THROW_ON_ERROR;
 
 trait MessageTrait {
 
-    private string            $uri           = '';
-    private null|string|array $body          = null;
+    private string            $uri             = '';
+    private null|string|array $body            = null;
     private string            $method;
     private string            $remoteAddress;
-    private array             $parsedHeaders = [];
+    private array             $parsedHeaders   = [];
+    private string            $protocolVersion = 'HTTP/1.1';
     private mixed             $parsedBody;
-    private bool              $bodyIsParsed  = false;
+    private bool              $bodyIsParsed    = false;
+
+    /**
+     * @return string
+     */
+    public function getProtocolVersion(): string {
+        return $this->protocolVersion;
+    }
 
     /**
      * @return array|string|null
@@ -93,15 +104,33 @@ trait MessageTrait {
      * @return array
      */
     public function getHeaders(bool $flattened = false): array {
-        if ($flattened) {
-            $headers = [];
-            foreach ($this->parsedHeaders as $name => $value) {
-                $headers[] = $name . ':' . implode(';', $value);
-            }
 
-            return $headers;
+        $tmp = $this->parsedHeaders;
+
+        if ($flattened) {
+            $tmp = [];
+            foreach ($this->parsedHeaders as $name => $value) {
+                $tmp[] = $name . ':' . implode(';', $value);
+            }
         }
-        return $this->parsedHeaders;
+
+        if ($this instanceof Response) {
+            if ($flattened) {
+                $tmp[] = sprintf('%s %d %s',
+                                 $this->protocolVersion,
+                                 $this->statusCode,
+                                 $this->reasonPhrase
+                );
+            } else {
+                $tmp['Status'] = [
+                    $this->protocolVersion,
+                    $this->statusCode,
+                    $this->reasonPhrase,
+                ];
+            }
+        }
+
+        return $tmp;
     }
 
     /**
@@ -113,6 +142,7 @@ trait MessageTrait {
         foreach ($headers as $name => $value) {
 
             if (is_int($name)) {
+
                 if (!str_contains($value, ':')) {
                     continue;
                 }
@@ -122,6 +152,8 @@ trait MessageTrait {
             if (is_string($value)) {
                 $value = array_map('trim', explode(';', $value));
             }
+
+            $name = str_replace('_', '-', $name);
             $this->parsedHeaders[$name] = $value;
         }
 

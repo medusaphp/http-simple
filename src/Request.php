@@ -18,14 +18,15 @@ class Request implements MessageInterface {
 
     use MessageTrait;
 
-
     public function __construct(
         array $headers,
         null|string|array $body,
         string $method,
         string $uri,
         string $remoteAddress,
+        string $protocolVersion = 'HTTP/1.1'
     ) {
+        $this->protocolVersion = $protocolVersion;
         $this->body = $body;
         $this->uri = $uri;
         $this->method = $method;
@@ -63,8 +64,8 @@ class Request implements MessageInterface {
             $_SERVER['REQUEST_METHOD'],
             $_SERVER['REQUEST_URI'],
             $remoteAddress,
+            $_SERVER['SERVER_PROTOCOL']
         );
     }
-
 
 }
