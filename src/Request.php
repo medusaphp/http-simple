@@ -4,7 +4,13 @@ namespace Medusa\Http\Simple;
 use Medusa\Http\Simple\Traits\MessageTrait;
 use function file_get_contents;
 use function getallheaders;
+use function implode;
+use function in_array;
+use function is_string;
+use function json_encode;
 use function Medusa\Http\getRemoteAddress;
+use function parse_url;
+use function strlen;
 use function strpos;
 use function strtolower;
 use function substr;
@@ -68,4 +74,40 @@ class Request implements MessageInterface {
         );
     }
 
+    public function toString(): string {
+        $headers = $this->getHeaders(true);
+        $body = $this->body;
+
+        if (!is_string($body)) {
+            if (!$this->hasHeader('Content-Type')) {
+                $body = json_encode($body);
+                $headers[] = 'Content-Type: application/json';
+            } elseif (in_array('application/json', $this->getHeader('Content-Type'))) {
+                $body = json_encode($body);
+            }
+        }
+
+        if (!$this->hasHeader('Content-Length')) {
+            $headers[] = 'Content-Length: ' . strlen($body);
+        }
+
+        $parts = parse_url($this->getUri());
+        $host = $parts['host'] ?? '';
+        $path = $parts['path'] ?? '/';
+        $query = $parts['query'] ?? '';
+
+        if ($query) {
+            $path .= '?' . $query;
+        }
+
+        $method = $this->getMethod();
+        $protocol = $this->getProtocolVersion();
+        $headersString = implode("\r\n", $headers);
+        $request = "{$method} {$path} {$protocol}\r\n";
+        $request .= "Host: {$host}\r\n";
+        $request .= "{$headersString}\r\n\r\n";
+        $request .= $body;
+
+        return $request;
+    }
 }
