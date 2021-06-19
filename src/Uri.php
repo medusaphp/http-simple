@@ -11,7 +11,7 @@ use const PHP_QUERY_RFC3986;
  * @package medusa/http-simple
  * @author  Pascal Schnell <pascal.schnell@getmedusa.org>
  */
-class Uri {
+class Uri implements UriInterface {
 
     /** @var string */
     private string $scheme = '';
@@ -24,9 +24,9 @@ class Uri {
     /** @var string */
     private string $fragment = '';
 
-    public function __construct(string|Uri|null $uri = null) {
+    public function __construct(string|UriInterface|null $uri = null) {
 
-        if ($uri instanceof Uri) {
+        if ($uri instanceof UriInterface) {
             $uri = (string)$uri;
         }
 
@@ -50,9 +50,9 @@ class Uri {
     /**
      * Set Scheme
      * @param string $scheme
-     * @return Uri
+     * @return UriInterface
      */
-    public function setScheme(string $scheme): Uri {
+    public function setScheme(string $scheme): UriInterface {
         $this->scheme = $scheme;
         return $this;
     }
@@ -60,9 +60,9 @@ class Uri {
     /**
      * With Scheme
      * @param string $scheme
-     * @return Uri
+     * @return UriInterface
      */
-    public function withScheme(string $scheme): Uri {
+    public function withScheme(string $scheme): UriInterface {
         $self = clone $this;
         $self->scheme = $scheme;
         return $self;
@@ -78,9 +78,9 @@ class Uri {
     /**
      * Set Host
      * @param string $host
-     * @return Uri
+     * @return UriInterface
      */
-    public function setHost(string $host): Uri {
+    public function setHost(string $host): UriInterface {
         $this->host = $host;
         return $this;
     }
@@ -88,9 +88,9 @@ class Uri {
     /**
      * With Host
      * @param string $host
-     * @return Uri
+     * @return UriInterface
      */
-    public function withHost(string $host): Uri {
+    public function withHost(string $host): UriInterface {
         $self = clone $this;
         $self->host = $host;
         return $self;
@@ -106,9 +106,9 @@ class Uri {
     /**
      * Set Path
      * @param string $path
-     * @return Uri
+     * @return UriInterface
      */
-    public function setPath(string $path): Uri {
+    public function setPath(string $path): UriInterface {
         $this->path = $path;
         return $this;
     }
@@ -116,9 +116,9 @@ class Uri {
     /**
      * With Path
      * @param string $path
-     * @return Uri
+     * @return UriInterface
      */
-    public function withPath(string $path): Uri {
+    public function withPath(string $path): UriInterface {
         $self = clone $this;
         $self->path = $path;
         return $self;
@@ -134,9 +134,9 @@ class Uri {
     /**
      * Set Query
      * @param array $query
-     * @return Uri
+     * @return UriInterface
      */
-    public function setQuery(array $query): Uri {
+    public function setQuery(array $query): UriInterface {
         $this->query = $query;
         return $this;
     }
@@ -144,9 +144,9 @@ class Uri {
     /**
      * With Query
      * @param array $query
-     * @return Uri
+     * @return UriInterface
      */
-    public function withQuery(array $query): Uri {
+    public function withQuery(array $query): UriInterface {
         $self = clone $this;
         $self->query = $query;
         return $self;
@@ -162,9 +162,9 @@ class Uri {
     /**
      * Set Fragment
      * @param string $fragment
-     * @return Uri
+     * @return UriInterface
      */
-    public function setFragment(string $fragment): Uri {
+    public function setFragment(string $fragment): UriInterface {
         $this->fragment = $fragment;
         return $this;
     }
@@ -172,9 +172,9 @@ class Uri {
     /**
      * With Fragment
      * @param string $fragment
-     * @return Uri
+     * @return UriInterface
      */
-    public function withFragment(string $fragment): Uri {
+    public function withFragment(string $fragment): UriInterface {
         $self = clone $this;
         $self->fragment = $fragment;
         return $self;

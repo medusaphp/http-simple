@@ -2,6 +2,7 @@
 namespace Medusa\Http\Simple;
 
 use Medusa\Http\Simple\Traits\MessageTrait;
+use function explode;
 use function file_get_contents;
 use function getallheaders;
 use function implode;
@@ -9,6 +10,7 @@ use function in_array;
 use function is_string;
 use function json_encode;
 use function Medusa\Http\getRemoteAddress;
+use function Medusa\Http\isSsl;
 use function strlen;
 use function strpos;
 use function strtolower;
@@ -27,13 +29,14 @@ class Request implements MessageInterface {
         array $headers,
         null|string|array $body,
         string $method,
-        string $uri,
+        string|UriInterface $uri,
         string $remoteAddress,
         string $protocolVersion = 'HTTP/1.1'
     ) {
+
         $this->protocolVersion = $protocolVersion;
         $this->body = $body;
-        $this->uri = $uri;
+        $this->setUri($uri);
         $this->method = $method;
         $this->remoteAddress = $remoteAddress;
         $this->addHeaders($headers);
@@ -67,10 +70,24 @@ class Request implements MessageInterface {
             getallheaders(),
             $body,
             $_SERVER['REQUEST_METHOD'],
-            $_SERVER['REQUEST_URI'],
+            self::createUriFromGlobals(),
             $remoteAddress,
             $_SERVER['SERVER_PROTOCOL']
         );
+    }
+
+    /**
+     * Create a Uri with values from $_SERVER.
+     * @return UriInterface
+     */
+    public static function createUriFromGlobals(): UriInterface {
+        $scheme = isSsl($_SERVER) ? 'https:' : 'http:';
+        $host = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'] ?? $_SERVER['SERVER_ADDR'] ?? '';
+        $requestUriParts = explode('?', $_SERVER['REQUEST_URI'] ?? '', 2);
+        $path = $requestUriParts[0];
+        $query = $requestUriParts[1] ?? $_SERVER['QUERY_STRING'] ?? '';
+        $uri = $scheme . '//' . $host . $path . ($query ? '?' . $query : '');
+        return new Uri($uri);
     }
 
     public function toString(): string {

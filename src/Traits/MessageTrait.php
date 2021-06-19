@@ -4,6 +4,7 @@ namespace Medusa\Http\Simple\Traits;
 use JsonException;
 use Medusa\Http\Simple\Response;
 use Medusa\Http\Simple\Uri;
+use Medusa\Http\Simple\UriInterface;
 use function array_filter;
 use function array_map;
 use function explode;
@@ -106,28 +107,28 @@ trait MessageTrait {
     }
 
     /**
-     * @return Uri
+     * @return UriInterface
      */
-    public function getUri(): Uri {
+    public function getUri(): UriInterface {
         return $this->uri;
     }
 
     /**
      * Set Uri
-     * @param string|Uri $uri
+     * @param string|UriInterface $uri
      * @return self
      */
-    public function setUri(string|Uri $uri): static {
+    public function setUri(string|UriInterface $uri): static {
         $this->uri = $uri instanceof Uri ? $uri : new Uri($uri);
         return $this;
     }
 
     /**
      * Set Uri
-     * @param string|Uri $uri
+     * @param string|UriInterface $uri
      * @return self
      */
-    public function withUri(string|Uri $uri): static {
+    public function withUri(string|UriInterface $uri): static {
         $self = clone $this;
         $self->setUri($uri);
         return $self;
