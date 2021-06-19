@@ -3,6 +3,7 @@ namespace Medusa\Http\Simple\Traits;
 
 use JsonException;
 use Medusa\Http\Simple\Response;
+use Medusa\Http\Simple\Uri;
 use function array_filter;
 use function array_map;
 use function explode;
@@ -18,9 +19,14 @@ use function stripos;
 use function strtolower;
 use const JSON_THROW_ON_ERROR;
 
+/**
+ * Trait MessageTrait
+ * @package medusa/http-simple
+ * @author  Pascal Schnell <pascal.schnell@getmedusa.org>
+ */
 trait MessageTrait {
 
-    private string            $uri             = '';
+    private ?Uri              $uri             = null;
     private null|string|array $body            = null;
     private string            $method;
     private string            $remoteAddress;
@@ -100,30 +106,30 @@ trait MessageTrait {
     }
 
     /**
-     * @return string
+     * @return Uri
      */
-    public function getUri(): string {
+    public function getUri(): Uri {
         return $this->uri;
     }
 
     /**
      * Set Uri
-     * @param string $uri
+     * @param string|Uri $uri
      * @return self
      */
-    public function setUri(string $uri): static {
-        $this->uri = $uri;
+    public function setUri(string|Uri $uri): static {
+        $this->uri = $uri instanceof Uri ? $uri : new Uri($uri);
         return $this;
     }
 
     /**
      * Set Uri
-     * @param string $uri
+     * @param string|Uri $uri
      * @return self
      */
-    public function withUri(string $uri): static {
+    public function withUri(string|Uri $uri): static {
         $self = clone $this;
-        $self->uri = $uri;
+        $self->setUri($uri);
         return $self;
     }
 

@@ -17,14 +17,21 @@ interface MessageInterface {
      * @param string $uri
      * @return self
      */
-    public function setUri(string $uri): static;
+    public function setUri(string|Uri $uri): static;
 
     /**
-     * @return string
+     * @param string|Uri $uri
+     * @return $this
      */
-    public function getUri(): string;
+    public function withUri(string|Uri $uri): static;
 
     /**
+     * @return Uri
+     */
+    public function getUri(): Uri;
+
+    /**
+     * @param bool $flattened
      * @return array
      */
     public function getHeaders(bool $flattened = false): array;

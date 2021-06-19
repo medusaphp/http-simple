@@ -9,7 +9,6 @@ use function in_array;
 use function is_string;
 use function json_encode;
 use function Medusa\Http\getRemoteAddress;
-use function parse_url;
 use function strlen;
 use function strpos;
 use function strtolower;
@@ -91,10 +90,9 @@ class Request implements MessageInterface {
             $headers[] = 'Content-Length: ' . strlen($body);
         }
 
-        $parts = parse_url($this->getUri());
-        $host = $parts['host'] ?? '';
-        $path = $parts['path'] ?? '/';
-        $query = $parts['query'] ?? '';
+        $host = $this->getUri()->getHost();
+        $path = $this->getUri()->getPath();
+        $query = $this->getUri()->getQuery();
 
         if ($query) {
             $path .= '?' . $query;
