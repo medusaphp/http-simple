@@ -37,6 +37,23 @@ trait MessageTrait {
     }
 
     /**
+     * @param array|string|null $body
+     * @return $this
+     */
+    public function withBody(array|string|null $body): static {
+        $self = clone $this;
+        $self->body = $body;
+        $self->bodyIsParsed = !($body === null || is_string($body));
+        if ($self->bodyIsParsed) {
+            $self->parsedBody = $self->body;
+        } else {
+            $self->parsedBody = null;
+        }
+
+        return $self;
+    }
+
+    /**
      * @return array|string|null
      */
     public function getBody(): array|string|null {
@@ -97,6 +114,17 @@ trait MessageTrait {
     public function setUri(string $uri): static {
         $this->uri = $uri;
         return $this;
+    }
+
+    /**
+     * Set Uri
+     * @param string $uri
+     * @return self
+     */
+    public function withUri(string $uri): static {
+        $self = clone $this;
+        $self->uri = $uri;
+        return $self;
     }
 
     /**
