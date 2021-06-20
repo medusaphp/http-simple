@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "12dc0ee50e234c57f9398ab6c7a8dbc4",
+    "content-hash": "a204c97d2149575b948abe90ec4376a9",
     "packages": [
         {
             "name": "medusa/functions",
-            "version": "1.0.0",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/medusaphp/functions.git",
-                "reference": "6652602fb9c611fd3622856b87c27f6aaeedf57d"
+                "reference": "41846592d75b10073fab41639a3a68cf876d6d17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/medusaphp/functions/zipball/6652602fb9c611fd3622856b87c27f6aaeedf57d",
-                "reference": "6652602fb9c611fd3622856b87c27f6aaeedf57d",
+                "url": "https://api.github.com/repos/medusaphp/functions/zipball/41846592d75b10073fab41639a3a68cf876d6d17",
+                "reference": "41846592d75b10073fab41639a3a68cf876d6d17",
                 "shasum": ""
             },
             "require": {
@@ -44,24 +44,24 @@
             "description": "functions",
             "support": {
                 "issues": "https://github.com/medusaphp/functions/issues",
-                "source": "https://github.com/medusaphp/functions/tree/1.0.0"
+                "source": "https://github.com/medusaphp/functions/tree/1.4.0"
             },
-            "time": "2021-06-08T08:43:00+00:00"
+            "time": "2021-06-19T22:59:10+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "medusa/dev-tools",
-            "version": "1.0.7",
+            "version": "1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/medusaphp/dev-tools.git",
-                "reference": "70f4b2f4efb25d9d2add47542f6981726b6dc3cc"
+                "reference": "109c2d1b5495fdd660587447b8b327cf1227f69a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/medusaphp/dev-tools/zipball/70f4b2f4efb25d9d2add47542f6981726b6dc3cc",
-                "reference": "70f4b2f4efb25d9d2add47542f6981726b6dc3cc",
+                "url": "https://api.github.com/repos/medusaphp/dev-tools/zipball/109c2d1b5495fdd660587447b8b327cf1227f69a",
+                "reference": "109c2d1b5495fdd660587447b8b327cf1227f69a",
                 "shasum": ""
             },
             "require": {
@@ -86,9 +86,9 @@
             "description": "Helper functions for debugging",
             "support": {
                 "issues": "https://github.com/medusaphp/dev-tools/issues",
-                "source": "https://github.com/medusaphp/dev-tools/tree/1.0.7"
+                "source": "https://github.com/medusaphp/dev-tools/tree/1.0.9"
             },
-            "time": "2021-06-10T06:01:50+00:00"
+            "time": "2021-06-20T11:08:05+00:00"
         }
     ],
     "aliases": [],
@@ -96,7 +96,9 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=8.0"
+    },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"
 }

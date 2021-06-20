@@ -107,23 +107,6 @@ trait MessageTrait {
     }
 
     /**
-     * @return UriInterface
-     */
-    public function getUri(): UriInterface {
-        return $this->uri;
-    }
-
-    /**
-     * Set Uri
-     * @param string|UriInterface $uri
-     * @return self
-     */
-    public function setUri(string|UriInterface $uri): static {
-        $this->uri = $uri instanceof Uri ? $uri : new Uri($uri);
-        return $this;
-    }
-
-    /**
      * Set Uri
      * @param string|UriInterface $uri
      * @return self
@@ -166,6 +149,46 @@ trait MessageTrait {
         }
 
         return $tmp;
+    }
+
+    public function withHeader(string $headerNameOrHeader, ?string $headerValue = null): static {
+        $self = clone $this;
+        $self->setUri((string)$this->getUri());
+
+        if ($headerValue !== null) {
+            $headerNameOrHeader .= ':' . $headerValue;
+        }
+        $self->parsedHeaders = [];
+        $self->addHeaders([$headerNameOrHeader]);
+        return $self;
+    }
+
+    public function withAddedHeader(string $headerNameOrHeader, ?string $headerValue = null): static {
+        $self = clone $this;
+        $self->setUri((string)$this->getUri());
+
+        if ($headerValue !== null) {
+            $headerNameOrHeader .= ':' . $headerValue;
+        }
+        $self->addHeaders([$headerNameOrHeader]);
+        return $self;
+    }
+
+    /**
+     * @return UriInterface
+     */
+    public function getUri(): UriInterface {
+        return $this->uri ??= new Uri();
+    }
+
+    /**
+     * Set Uri
+     * @param string|UriInterface $uri
+     * @return self
+     */
+    public function setUri(string|UriInterface $uri): static {
+        $this->uri = $uri instanceof Uri ? $uri : new Uri($uri);
+        return $this;
     }
 
     /**

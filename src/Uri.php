@@ -4,6 +4,7 @@ namespace Medusa\Http\Simple;
 use function http_build_query;
 use function parse_str;
 use function parse_url;
+use function str_starts_with;
 use const PHP_QUERY_RFC3986;
 
 /**
@@ -31,8 +32,14 @@ class Uri implements UriInterface {
         }
 
         if ($uri !== null) {
+            $magicScheme = str_starts_with($uri, ':');
+
+            if ($magicScheme) {
+                $uri = 'http' . $uri;
+            }
+
             $parts = parse_url($uri);
-            $this->scheme = $parts['scheme'] ?? '';
+            $this->scheme = !$magicScheme ? ($parts['scheme'] ?? '') : '';
             $this->host = $parts['host'] ?? '';
             $this->path = $parts['path'] ?? '';
             parse_str($parts['query'] ?? '', $this->query);
