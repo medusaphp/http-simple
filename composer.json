@@ -2,7 +2,8 @@
   "name": "medusa/http-simple",
   "require": {
     "php": ">=8.0",
-    "medusa/functions": "^1.0"
+    "medusa/functions": "^1.0",
+    "ext-json": "*"
   },
   "license": "MIT",
   "authors": [
