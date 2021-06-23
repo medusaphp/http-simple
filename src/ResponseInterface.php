@@ -6,7 +6,7 @@ namespace Medusa\Http\Simple;
  * @package medusa/http-simple
  * @author  Pascal Schnell <pascal.schnell@getmedusa.org>
  */
-interface ResponseInterface {
+interface ResponseInterface extends MessageInterface {
 
     /**
      * @return string
