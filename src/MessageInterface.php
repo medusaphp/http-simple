@@ -13,24 +13,6 @@ interface MessageInterface {
     public function addHeaders(array $headers): static;
 
     /**
-     * Set Uri
-     * @param string|UriInterface $uri
-     * @return self
-     */
-    public function setUri(string|UriInterface $uri): static;
-
-    /**
-     * @param string|UriInterface $uri
-     * @return $this
-     */
-    public function withUri(string|UriInterface $uri): static;
-
-    /**
-     * @return UriInterface
-     */
-    public function getUri(): UriInterface;
-
-    /**
      * @param bool $flattened
      * @return array
      */
@@ -40,11 +22,6 @@ interface MessageInterface {
      * @return array|string|null
      */
     public function getBody(): array|string|null;
-
-    /**
-     * @return string
-     */
-    public function getMethod(): string;
 
     /**
      * @return bool
@@ -60,9 +37,4 @@ interface MessageInterface {
     public function removeHeaderValue(string $headerName, string $valueName): static;
 
     public function hasHeader(string $name): bool;
-
-    /**
-     * @return string
-     */
-    public function getRemoteAddress(): string;
 }

@@ -10,7 +10,9 @@ use function preg_match;
  * @package medusa/http-simple
  * @author  Pascal Schnell <pascal.schnell@getmedusa.org>
  */
-class Response implements MessageInterface {
+class Response implements ResponseInterface {
+
+    use MessageTrait;
 
     private const STATUS_PHRASES = [
         100 => 'Continue',
@@ -73,8 +75,6 @@ class Response implements MessageInterface {
         511 => 'Network Authentication Required',
     ];
 
-    use MessageTrait;
-
     private string $reasonPhrase;
 
     /**
@@ -83,7 +83,13 @@ class Response implements MessageInterface {
      * @param string $body
      * @param int    $statusCode
      */
-    public function __construct(array $headers, string $body, private int $statusCode = 200, ?string $reasonPhrase = null, string $protocolVersion = 'HTTP/1.1') {
+    public function __construct(
+        array $headers,
+        string $body,
+        private int $statusCode = 200,
+        ?string $reasonPhrase = null,
+        string $protocolVersion = 'HTTP/1.1'
+    ) {
         $this->reasonPhrase = $reasonPhrase ?? self::STATUS_PHRASES[$this->statusCode] ?? '';
         $this->protocolVersion = $protocolVersion;
         $this->addHeaders($headers);
@@ -125,23 +131,23 @@ class Response implements MessageInterface {
     }
 
     /**
-     * Set StatusCode
-     * @param int $statusCode
-     * @return Response
+     * @param int         $statusCode
+     * @param string|null $phrase
+     * @return $this
      */
-    public function setStatus(int $statusCode, string $reasonPhrase): Response {
+    public function setStatus(int $statusCode, ?string $phrase = null): static {
         $this->statusCode = $statusCode;
+        $this->reasonPhrase = $phrase ?? self::STATUS_PHRASES[$statusCode] ?? '';
         return $this;
     }
 
-    public function __clone(): void {
-        $uri = (string)$this->getUri();
-        $this->setUri($uri);
-    }
-
-    public function withStatus(int $statusCode): Response {
-
-        $reasonPhrase = self::STATUS_PHRASES[$statusCode] ?? '';
+    /**
+     * @param int         $statusCode
+     * @param string|null $phrase
+     * @return self
+     */
+    public function withStatus(int $statusCode, ?string $phrase = null): static {
+        $reasonPhrase = $phrase ?? self::STATUS_PHRASES[$statusCode] ?? '';
         $self = clone $this;
 
         $self->statusCode = $statusCode;

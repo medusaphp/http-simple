@@ -21,9 +21,11 @@ use function substr;
  * @package medusa/http-simple
  * @author  Pascal Schnell <pascal.schnell@getmedusa.org>
  */
-class Request implements MessageInterface {
+class Request implements RequestInterface {
 
     use MessageTrait;
+
+    private ?Uri $uri = null;
 
     public function __construct(
         array $headers,
@@ -90,6 +92,49 @@ class Request implements MessageInterface {
         return new Uri($uri);
     }
 
+    public function __clone(): void {
+        $uri = (string)$this->getUri();
+        $this->setUri($uri);
+    }
+
+    /**
+     * @return UriInterface
+     */
+    public function getUri(): UriInterface {
+        return $this->uri ??= new Uri();
+    }
+
+    /**
+     * Set Uri
+     * @param string|UriInterface $uri
+     * @return self
+     */
+    public function setUri(string|UriInterface $uri): static {
+        $this->uri = $uri instanceof Uri ? $uri : new Uri($uri);
+        return $this;
+    }
+
+    /**
+     * Set Uri
+     * @param string|UriInterface $uri
+     * @return self
+     */
+    public function withUri(string|UriInterface $uri): static {
+        $self = clone $this;
+        $self->setUri($uri);
+        return $self;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string {
+        return $this->toString();
+    }
+
+    /**
+     * @return string
+     */
     public function toString(): string {
         $headers = $this->getHeaders(true);
         $body = $this->body;
@@ -108,12 +153,9 @@ class Request implements MessageInterface {
         }
 
         $host = $this->getUri()->getHost();
-        $path = $this->getUri()->getPath();
-        $query = $this->getUri()->getQuery();
-
-        if ($query) {
-            $path .= '?' . $query;
-        }
+        $path = (string)(new Uri())
+            ->setPath($this->getUri()->getPath())
+            ->setQuery($this->getUri()->getQuery());
 
         $method = $this->getMethod();
         $protocol = $this->getProtocolVersion();
@@ -124,5 +166,25 @@ class Request implements MessageInterface {
         $request .= $body;
 
         return $request;
+    }
+
+    /**
+     * @param string $method
+     * @return $this
+     */
+    public function setMethod(string $method): static {
+        $this->method = $method;
+        return $this;
+    }
+
+    /**
+     * @param string $method
+     * @return Request
+     */
+    public function withMethod(string $method): static {
+        $self = clone $this;
+        $self->method = $method;
+
+        return $self;
     }
 }

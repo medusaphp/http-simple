@@ -191,7 +191,7 @@ class Uri implements UriInterface {
      * @return string
      */
     public function __toString(): string {
-        return $this->scheme . '://' . $this->host . $this->path .
+        return $this->scheme . ($this->host ? '://' : '') . $this->host . $this->path .
             ($this->query ? '?' . http_build_query(
                     $this->query,
                     encoding_type: PHP_QUERY_RFC3986)

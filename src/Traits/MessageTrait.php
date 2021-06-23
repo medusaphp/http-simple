@@ -3,8 +3,6 @@ namespace Medusa\Http\Simple\Traits;
 
 use JsonException;
 use Medusa\Http\Simple\Response;
-use Medusa\Http\Simple\Uri;
-use Medusa\Http\Simple\UriInterface;
 use function array_filter;
 use function array_map;
 use function explode;
@@ -27,7 +25,6 @@ use const JSON_THROW_ON_ERROR;
  */
 trait MessageTrait {
 
-    private ?Uri              $uri             = null;
     private null|string|array $body            = null;
     private string            $method;
     private string            $remoteAddress;
@@ -51,6 +48,7 @@ trait MessageTrait {
         $self = clone $this;
         $self->body = $body;
         $self->bodyIsParsed = !($body === null || is_string($body));
+
         if ($self->bodyIsParsed) {
             $self->parsedBody = $self->body;
         } else {
@@ -107,17 +105,6 @@ trait MessageTrait {
     }
 
     /**
-     * Set Uri
-     * @param string|UriInterface $uri
-     * @return self
-     */
-    public function withUri(string|UriInterface $uri): static {
-        $self = clone $this;
-        $self->setUri($uri);
-        return $self;
-    }
-
-    /**
      * @param bool $flattened
      * @return array
      */
@@ -151,9 +138,13 @@ trait MessageTrait {
         return $tmp;
     }
 
+    /**
+     * @param string      $headerNameOrHeader
+     * @param string|null $headerValue
+     * @return $this
+     */
     public function withHeader(string $headerNameOrHeader, ?string $headerValue = null): static {
         $self = clone $this;
-        $self->setUri((string)$this->getUri());
 
         if ($headerValue !== null) {
             $headerNameOrHeader .= ':' . $headerValue;
@@ -161,34 +152,6 @@ trait MessageTrait {
         $self->parsedHeaders = [];
         $self->addHeaders([$headerNameOrHeader]);
         return $self;
-    }
-
-    public function withAddedHeader(string $headerNameOrHeader, ?string $headerValue = null): static {
-        $self = clone $this;
-        $self->setUri((string)$this->getUri());
-
-        if ($headerValue !== null) {
-            $headerNameOrHeader .= ':' . $headerValue;
-        }
-        $self->addHeaders([$headerNameOrHeader]);
-        return $self;
-    }
-
-    /**
-     * @return UriInterface
-     */
-    public function getUri(): UriInterface {
-        return $this->uri ??= new Uri();
-    }
-
-    /**
-     * Set Uri
-     * @param string|UriInterface $uri
-     * @return self
-     */
-    public function setUri(string|UriInterface $uri): static {
-        $this->uri = $uri instanceof Uri ? $uri : new Uri($uri);
-        return $this;
     }
 
     /**
@@ -216,6 +179,21 @@ trait MessageTrait {
         }
 
         return $this;
+    }
+
+    /**
+     * @param string      $headerNameOrHeader
+     * @param string|null $headerValue
+     * @return $this
+     */
+    public function withAddedHeader(string $headerNameOrHeader, ?string $headerValue = null): static {
+        $self = clone $this;
+
+        if ($headerValue !== null) {
+            $headerNameOrHeader .= ':' . $headerValue;
+        }
+        $self->addHeaders([$headerNameOrHeader]);
+        return $self;
     }
 
     /**
