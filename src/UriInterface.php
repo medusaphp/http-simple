@@ -102,4 +102,17 @@ interface UriInterface {
      * @return UriInterface
      */
     public function withFragment(string $fragment): UriInterface;
+
+    public function getPort(): ?int;
+
+    /**
+     * @return int|null
+     */
+    public function setPort(int $port): UriInterface;
+
+    /**
+     * @param int $port
+     * @return UriInterface
+     */
+    public function withPort(int $port): UriInterface;
 }

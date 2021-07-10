@@ -14,6 +14,19 @@ use const PHP_QUERY_RFC3986;
  */
 class Uri implements UriInterface {
 
+    private const SCHEME_TO_PORT = [
+        'ftp'    => 21,
+        'telnet' => 23,
+        'tn3270' => 23,
+        'gopher' => 70,
+        'http'   => 80,
+        'pop'    => 110,
+        'nntp'   => 119,
+        'news'   => 119,
+        'imap'   => 143,
+        'ldap'   => 389,
+        'https'  => 443,
+    ];
     /** @var string */
     private string $scheme = '';
     /** @var string */
@@ -24,6 +37,8 @@ class Uri implements UriInterface {
     private array $query = [];
     /** @var string */
     private string $fragment = '';
+    /** @var int|null */
+    private ?int $port = null;
 
     public function __construct(string|UriInterface|null $uri = null) {
 
@@ -44,7 +59,35 @@ class Uri implements UriInterface {
             $this->path = $parts['path'] ?? '';
             parse_str($parts['query'] ?? '', $this->query);
             $this->fragment = $parts['fragment'] ?? '';
+            if (!empty($parts['port'])) {
+                $this->port = (int)$parts['port'];
+            }
         }
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getPort(): ?int {
+        return $this->port;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function setPort(int $port): UriInterface {
+        $this->port = $port;
+        return $this;
+    }
+
+    /**
+     * @param int $port
+     * @return UriInterface
+     */
+    public function withPort(int $port): UriInterface {
+        $self = clone $this;
+        $self->port = $port;
+        return $self;
     }
 
     /**
@@ -191,7 +234,12 @@ class Uri implements UriInterface {
      * @return string
      */
     public function __toString(): string {
-        return $this->scheme . ($this->host ? '://' : '') . $this->host . $this->path .
+        $portStr = '';
+        if ($this->port && (static::SCHEME_TO_PORT[$this->scheme] ?? null) !== $this->port) {
+            $portStr = ':' . $this->port;
+        }
+
+        return $this->scheme . ($this->host ? '://' : '') . $this->host . $portStr . $this->path .
             ($this->query ? '?' . http_build_query(
                     $this->query,
                     encoding_type: PHP_QUERY_RFC3986)
