@@ -37,4 +37,7 @@ interface MessageInterface {
     public function removeHeaderValue(string $headerName, string $valueName): static;
 
     public function hasHeader(string $name): bool;
+    
+    public function withBody(array|string|null $body): static;
+
 }
