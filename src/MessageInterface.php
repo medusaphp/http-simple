@@ -40,4 +40,6 @@ interface MessageInterface {
     
     public function withBody(array|string|null $body): static;
 
+    public function withHeader(string $headerNameOrHeader, ?string $headerValue = null): static;
+
 }
