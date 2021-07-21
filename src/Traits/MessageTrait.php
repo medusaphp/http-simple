@@ -167,7 +167,7 @@ trait MessageTrait {
                 if (!str_contains($value, ':')) {
                     continue;
                 }
-                [$name, $value] = explode(':', $value);
+                [$name, $value] = explode(':', $value, 2);
             }
 
             if (is_string($value)) {
