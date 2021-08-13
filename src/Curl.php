@@ -53,7 +53,9 @@ class Curl {
                                 ], '', 500, 'Internal Server Error');
         }
 
-        return Response::createFromRawResponse($response, curl_getinfo($this->curl, CURLINFO_RESPONSE_CODE));
+        $headerLen = curl_getinfo($this->curl, CURLINFO_HEADER_SIZE);
+        $responseCode = curl_getinfo($this->curl, CURLINFO_RESPONSE_CODE);
+        return Response::createFromRawResponse($response, $responseCode, $headerLen);
     }
 
     public static function createForRequest(MessageInterface $request): static {
