@@ -92,7 +92,7 @@ class Response implements ResponseInterface {
     ) {
         $this->reasonPhrase = $reasonPhrase ?? self::STATUS_PHRASES[$this->statusCode] ?? '';
         $this->protocolVersion = $protocolVersion;
-        $this->addHeaders($headers);
+        $this->addHeaders(array_filter($headers));
         $this->body = $body;
     }
 
