@@ -99,11 +99,14 @@ class Response implements ResponseInterface {
     /**
      * @param string   $rawResponse
      * @param int|null $statusCode
+     * @param int      $headerLen
      * @return static
      */
-    public static function createFromRawResponse(string $rawResponse, ?int $statusCode = null): self {
+    public static function createFromRawResponse(string $rawResponse, ?int $statusCode = null, int $headerLen): self {
 
-        [$headers, $body] = explode("\r\n\r\n", $rawResponse, 2);
+        $headers = substr($rawResponse, 0, $headerLen);
+        $body = substr($rawResponse, $headerLen);
+
         $headers = explode("\r\n", $headers);
         if ($statusCode === null) {
             if (preg_match('/(\d{3})/', $headers[0], $match)) {
