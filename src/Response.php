@@ -104,13 +104,21 @@ class Response implements ResponseInterface {
     public static function createFromRawResponse(string $rawResponse, ?int $statusCode = null): self {
 
         [$headers, $body] = explode("\r\n\r\n", $rawResponse, 2);
+
         $headers = explode("\r\n", $headers);
-        if ($statusCode === null) {
-            if (preg_match('/(\d{3})/', $headers[0], $match)) {
-                $statusCode = (int)$match[1];
-            } else {
-                $statusCode = 200;
+
+        if (preg_match('/(\d{3})/', $headers[0], $match)) {
+
+            $headerStatusCode = (int)$match[1];
+            if (in_array($headerStatusCode, [100, 101, 102, 103])) {
+                return self::createFromRawResponse($body, $statusCode);
             }
+        }
+
+        if ($statusCode === null && !empty($headerStatusCode)) {
+            $statusCode = $headerStatusCode;
+        } elseif ($statusCode === null) {
+            $statusCode = 200;
         }
 
         return new static($headers, $body, $statusCode);
