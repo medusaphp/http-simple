@@ -115,4 +115,17 @@ interface UriInterface {
      * @return UriInterface
      */
     public function withPort(int $port): UriInterface;
+
+    public function withoutPort(): UriInterface;
+
+    public function withoutScheme(): UriInterface;
+
+    public function withoutHost(): UriInterface;
+
+    public function withoutPath(): UriInterface;
+
+    public function withoutQuery(): UriInterface;
+
+    public function withoutFragment(): UriInterface;
+
 }
