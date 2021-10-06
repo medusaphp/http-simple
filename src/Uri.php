@@ -66,6 +66,7 @@ class Uri implements UriInterface {
     }
 
     /**
+     * Get port
      * @return int|null
      */
     public function getPort(): ?int {
@@ -73,7 +74,9 @@ class Uri implements UriInterface {
     }
 
     /**
-     * @return int|null
+     * Set port
+     * @param int $port
+     * @return UriInterface
      */
     public function setPort(int $port): UriInterface {
         $this->port = $port;
@@ -81,12 +84,23 @@ class Uri implements UriInterface {
     }
 
     /**
+     * With port
      * @param int $port
      * @return UriInterface
      */
     public function withPort(int $port): UriInterface {
         $self = clone $this;
         $self->port = $port;
+        return $self;
+    }
+
+    /**
+     * Without port
+     * @return UriInterface
+     */
+    public function withoutPort(): UriInterface {
+        $self = clone $this;
+        $self->port = null;
         return $self;
     }
 
@@ -119,6 +133,16 @@ class Uri implements UriInterface {
     }
 
     /**
+     * Without Scheme
+     * @return UriInterface
+     */
+    public function withoutScheme(): UriInterface {
+        $self = clone $this;
+        $self->scheme = '';
+        return $self;
+    }
+
+    /**
      * @return string
      */
     public function getHost(): string {
@@ -143,6 +167,16 @@ class Uri implements UriInterface {
     public function withHost(string $host): UriInterface {
         $self = clone $this;
         $self->host = $host;
+        return $self;
+    }
+
+    /**
+     * Without Host
+     * @return UriInterface
+     */
+    public function withoutHost(): UriInterface {
+        $self = clone $this;
+        $self->host = '';
         return $self;
     }
 
@@ -175,6 +209,16 @@ class Uri implements UriInterface {
     }
 
     /**
+     * Without Path
+     * @return UriInterface
+     */
+    public function withoutPath(): UriInterface {
+        $self = clone $this;
+        $self->path = '';
+        return $self;
+    }
+
+    /**
      * @return array
      */
     public function getQuery(): array {
@@ -203,6 +247,16 @@ class Uri implements UriInterface {
     }
 
     /**
+     * Without Query
+     * @return UriInterface
+     */
+    public function withoutQuery(): UriInterface {
+        $self = clone $this;
+        $self->query = [];
+        return $self;
+    }
+
+    /**
      * @return string
      */
     public function getFragment(): string {
@@ -227,6 +281,16 @@ class Uri implements UriInterface {
     public function withFragment(string $fragment): UriInterface {
         $self = clone $this;
         $self->fragment = $fragment;
+        return $self;
+    }
+
+    /**
+     * Without Fragment
+     * @return UriInterface
+     */
+    public function withoutFragment(): UriInterface {
+        $self = clone $this;
+        $self->fragment = '';
         return $self;
     }
 
