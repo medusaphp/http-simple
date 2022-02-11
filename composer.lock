@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a204c97d2149575b948abe90ec4376a9",
+    "content-hash": "ab2a6cc987cb8c99c77d7a167747b5b4",
     "packages": [
         {
             "name": "medusa/functions",
-            "version": "1.4.0",
+            "version": "1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/medusaphp/functions.git",
-                "reference": "41846592d75b10073fab41639a3a68cf876d6d17"
+                "reference": "ee952cc3bbfabdd4547e3b2baa85cf5c768e28c7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/medusaphp/functions/zipball/41846592d75b10073fab41639a3a68cf876d6d17",
-                "reference": "41846592d75b10073fab41639a3a68cf876d6d17",
+                "url": "https://api.github.com/repos/medusaphp/functions/zipball/ee952cc3bbfabdd4547e3b2baa85cf5c768e28c7",
+                "reference": "ee952cc3bbfabdd4547e3b2baa85cf5c768e28c7",
                 "shasum": ""
             },
             "require": {
@@ -44,9 +44,9 @@
             "description": "functions",
             "support": {
                 "issues": "https://github.com/medusaphp/functions/issues",
-                "source": "https://github.com/medusaphp/functions/tree/1.4.0"
+                "source": "https://github.com/medusaphp/functions/tree/1.5.0"
             },
-            "time": "2021-06-19T22:59:10+00:00"
+            "time": "2022-02-11T11:55:09+00:00"
         }
     ],
     "packages-dev": [
@@ -97,7 +97,8 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.0"
+        "php": ">=8.0",
+        "ext-json": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.1.0"
